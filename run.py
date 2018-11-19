@@ -10,6 +10,7 @@ import numpy as np
 
 LOCK_TIMEOUT = 3  # how long to wait before locking the screen
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SCREENSAVER_COMMAND = 'cinnamon-screensaver-command'
 LOCK_ARGS = {
     True: '--activate',
     False: '--deactivate',
@@ -17,7 +18,7 @@ LOCK_ARGS = {
 
 
 def lock_screen(lock):
-    call(('cinnamon-screensaver-command', LOCK_ARGS[lock]))
+    call((SCREENSAVER_COMMAND, LOCK_ARGS[lock]))
 
 
 def find_user_in_frame(conn, frame, user_encoding):
