@@ -2,6 +2,7 @@ import os
 from subprocess import call
 from threading import Timer
 from multiprocessing import Process, Pipe
+import traceback
 
 import cv2
 import face_recognition
@@ -44,7 +45,7 @@ def load_user_encoding():
     return user_image_face_encoding
 
 
-if __name__ == '__main__':
+def main():
     user_encoding = load_user_encoding()
     video_capture = cv2.VideoCapture(0)  # get a reference to webcam #0 (the default one)
 
@@ -78,5 +79,15 @@ if __name__ == '__main__':
             else:
                 print('user not found')
                 if user_not_found_timer is None:
-                    user_not_found_timer = Timer(LOCK_TIMEOUT, lock_screen, (True, ))
+                    user_not_found_timer = Timer(LOCK_TIMEOUT, lock_screen, (True,))
                     user_not_found_timer.start()
+
+
+if __name__ == '__main__':
+    while True:
+        try:
+            main()
+        except Exception:
+            with open(os.path.join(BASE_DIR, 'error.log'), 'a') as error_file:
+                traceback.print_exc(file=error_file)
+                error_file.write('\n')
