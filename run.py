@@ -51,7 +51,7 @@ def main():
     user_encoding = load_user_encoding()
     video_capture = cv2.VideoCapture(0)  # get a reference to webcam #0 (the default one)
 
-    user_not_found_timer = None
+    lock_timer = None
 
     parent_conn, child_conn = Pipe()
     find_user_process = None
@@ -72,14 +72,14 @@ def main():
             if user_found:
                 print('user found')
                 lock_screen(False)
-                if user_not_found_timer is not None:
-                    user_not_found_timer.cancel()
-                    user_not_found_timer = None
+                if lock_timer is not None:
+                    lock_timer.cancel()
+                    lock_timer = None
             else:
                 print('user not found')
-                if user_not_found_timer is None:
-                    user_not_found_timer = Timer(LOCK_TIMEOUT, lock_screen, (True,))
-                    user_not_found_timer.start()
+                if lock_timer is None:
+                    lock_timer = Timer(LOCK_TIMEOUT, lock_screen, (True,))
+                    lock_timer.start()
 
 
 if __name__ == '__main__':
