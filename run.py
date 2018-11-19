@@ -30,7 +30,8 @@ def find_user_in_frame(conn, frame, user_encoding):
         matches = face_recognition.compare_faces((user_encoding, ), face_encoding, tolerance=0.9)
 
         found_user = any(matches)
-        break
+        if found_user:
+            break
 
     conn.send(found_user)
 
