@@ -1,8 +1,8 @@
 import os
+import traceback
+from multiprocessing import Process, Pipe
 from subprocess import call
 from threading import Timer
-from multiprocessing import Process, Pipe
-import traceback
 
 import cv2
 import face_recognition
@@ -49,10 +49,7 @@ def main():
     user_encoding = load_user_encoding()
     video_capture = cv2.VideoCapture(0)  # get a reference to webcam #0 (the default one)
 
-    user_found_timer = None
     user_not_found_timer = None
-
-    process_this_frame = True
 
     parent_conn, child_conn = Pipe()
     find_user_process = None
